@@ -1,12 +1,36 @@
 "use server"
 
-import { createServerActionClient } from "@supabase/ssr"
+import { createServerClient } from "@supabase/ssr"
 import { cookies } from "next/headers"
 import type { Database } from "@/lib/database.types" // Assuming you have this type definition
 
 export async function saveApiKeys(formData: FormData) {
   const cookieStore = cookies()
-  const supabase = createServerActionClient<Database>({ cookies: () => cookieStore })
+  const supabase = createServerClient<Database>(
+    process.env.NEXT_PUBLIC_SUPABASE_URL!,
+    process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!,
+    {
+      cookies: {
+        get(name: string) {
+          return cookieStore.get(name)?.value
+        },
+        set(name: string, value: string, options: any) {
+          try {
+            cookieStore.set({ name, value, ...options })
+          } catch (error) {
+            // The `set` method was called from a Server Component.
+          }
+        },
+        remove(name: string, options: any) {
+          try {
+            cookieStore.set({ name, value: "", ...options })
+          } catch (error) {
+            // The `delete` method was called from a Server Component.
+          }
+        },
+      },
+    }
+  )
   try {
 
     // Get the current user
@@ -96,7 +120,31 @@ export async function saveApiKeys(formData: FormData) {
 
 export async function getApiKeys() {
   const cookieStore = cookies()
-  const supabase = createServerActionClient<Database>({ cookies: () => cookieStore })
+  const supabase = createServerClient<Database>(
+    process.env.NEXT_PUBLIC_SUPABASE_URL!,
+    process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!,
+    {
+      cookies: {
+        get(name: string) {
+          return cookieStore.get(name)?.value
+        },
+        set(name: string, value: string, options: any) {
+          try {
+            cookieStore.set({ name, value, ...options })
+          } catch (error) {
+            // The `set` method was called from a Server Component.
+          }
+        },
+        remove(name: string, options: any) {
+          try {
+            cookieStore.set({ name, value: "", ...options })
+          } catch (error) {
+            // The `delete` method was called from a Server Component.
+          }
+        },
+      },
+    }
+  )
   try {
 
     // Get the current user
