@@ -1,6 +1,6 @@
 {
   "dependencies": {
-    "@supabase/auth-helpers-nextjs": "^0.5.0", // Ensure this is present
+    "@supabase/auth-helpers-nextjs": "^0.5.0"
     // other dependencies...
   }
 }
