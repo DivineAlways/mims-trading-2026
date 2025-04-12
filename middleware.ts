@@ -25,9 +25,3 @@ export const config = {
     "/((?!_next/static|_next/image|favicon.ico|.*\\.(?:svg|png|jpg|jpeg|gif|webp)$).*)",
   ],
 }
-```
-```
-"dependencies": {
-  "@supabase/auth-helpers-nextjs": "^0.x.x", // Ensure this is present
-  ...
-}
