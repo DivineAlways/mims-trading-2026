@@ -14,23 +14,18 @@ export async function saveApiKeys(formData: FormData) {
         get(name: string) {
           return cookieStore.get(name)?.value
         },
-        set(name: string, value: string, options: CookieOptions) { // Use CookieOptions type
-          try {
-            cookieStore.set({ name, value, ...options })
-          } catch (error) {
-            // The `set` method was called from a Server Component.
-          }
+        set(name: string, value: string, options: CookieOptions) {
+          cookieStore.set({ name, value, ...options })
         },
-        remove(name: string, options: CookieOptions) { // Use CookieOptions type
-          try {
-            cookieStore.set({ name, value: "", ...options })
-          } catch (error) {
-            // The `delete` method was called from a Server Component.
-          }
+        remove(name: string, options: CookieOptions) {
+          cookieStore.set({ name, value: "", ...options })
         },
       },
     }
   )
+
+  // Refresh session if needed
+  await supabase.auth.getSession()
   try {
 
     // Get the current user

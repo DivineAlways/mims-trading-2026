@@ -12,11 +12,8 @@ export async function middleware(request: NextRequest) {
   });
 
   try {
-    // Check if createMiddlewareClient is available
-    const supabase = createMiddlewareClient<Database>({
-      request,
-      response,
-    }) || createServerClient<Database>(
+    // Create authenticated Supabase client
+    const supabase = createServerClient<Database>(
       process.env.NEXT_PUBLIC_SUPABASE_URL!,
       process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!,
       {
