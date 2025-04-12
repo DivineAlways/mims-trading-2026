@@ -39,11 +39,21 @@ export async function saveApiKeys(formData: FormData) {
       error: sessionError,
     } = await supabase.auth.getSession()
 
-    if (sessionError || !session) {
-      return { success: false, message: "You must be logged in to save API keys" }
+    // Detailed logging for session check
+    if (sessionError) {
+      console.error("Supabase session error in saveApiKeys:", sessionError.message);
+      // Return a more specific error if possible, but keep it generic for the client
+      return { success: false, message: `Authentication error occurred. Please try logging in again.` };
     }
+    if (!session) {
+      console.warn("No active session found in saveApiKeys. User might be logged out or cookie is invalid/missing.");
+      return { success: false, message: "You must be logged in to save API keys. Please ensure you are logged in." };
+    }
+    // Log session details if successful (optional, remove if too verbose or sensitive)
+    // console.log("Session successfully retrieved in saveApiKeys:", JSON.stringify(session, null, 2));
 
     const userId = session.user.id
+    console.log(`User authenticated for saveApiKeys: ${userId}`); // Log user ID if session is valid
     const exchange = formData.get("exchange") as string
     const apiKey = formData.get("apiKey") as string
     const apiSecret = formData.get("apiSecret") as string
@@ -153,11 +163,20 @@ export async function getApiKeys() {
       error: sessionError,
     } = await supabase.auth.getSession()
 
-    if (sessionError || !session) {
-      return { success: false, message: "You must be logged in to retrieve API keys", data: null }
+    // Detailed logging for session check
+    if (sessionError) {
+      console.error("Supabase session error in getApiKeys:", sessionError.message);
+      return { success: false, message: `Authentication error occurred. Please try logging in again.`, data: null };
     }
+    if (!session) {
+      console.warn("No active session found in getApiKeys. User might be logged out or cookie is invalid/missing.");
+      return { success: false, message: "You must be logged in to retrieve API keys. Please ensure you are logged in.", data: null };
+    }
+    // Log session details if successful (optional, remove if too verbose or sensitive)
+    // console.log("Session successfully retrieved in getApiKeys:", JSON.stringify(session, null, 2));
 
     const userId = session.user.id
+    console.log(`User authenticated for getApiKeys: ${userId}`); // Log user ID if session is valid
 
     // Get all API keys for this user
     const { data, error } = await supabase.from("api_keys").select("*").eq("user_id", userId)
