@@ -1,6 +1,6 @@
 "use server"
 
-import { createServerClient } from "@supabase/ssr"
+import { createServerClient, type CookieOptions } from "@supabase/ssr" // Import CookieOptions
 import { cookies } from "next/headers"
 import type { Database } from "@/lib/database.types" // Assuming you have this type definition
 
@@ -14,14 +14,14 @@ export async function saveApiKeys(formData: FormData) {
         get(name: string) {
           return cookieStore.get(name)?.value
         },
-        set(name: string, value: string, options: any) {
+        set(name: string, value: string, options: CookieOptions) { // Use CookieOptions type
           try {
             cookieStore.set({ name, value, ...options })
           } catch (error) {
             // The `set` method was called from a Server Component.
           }
         },
-        remove(name: string, options: any) {
+        remove(name: string, options: CookieOptions) { // Use CookieOptions type
           try {
             cookieStore.set({ name, value: "", ...options })
           } catch (error) {
@@ -129,6 +129,7 @@ export async function saveApiKeys(formData: FormData) {
 }
 
 export async function getApiKeys() {
+  // No need to re-import CookieOptions here as it's already imported at the top
   const cookieStore = cookies()
   const supabase = createServerClient<Database>(
     process.env.NEXT_PUBLIC_SUPABASE_URL!,
@@ -138,14 +139,14 @@ export async function getApiKeys() {
         get(name: string) {
           return cookieStore.get(name)?.value
         },
-        set(name: string, value: string, options: any) {
+        set(name: string, value: string, options: CookieOptions) { // Use CookieOptions type
           try {
             cookieStore.set({ name, value, ...options })
           } catch (error) {
             // The `set` method was called from a Server Component.
           }
         },
-        remove(name: string, options: any) {
+        remove(name: string, options: CookieOptions) { // Use CookieOptions type
           try {
             cookieStore.set({ name, value: "", ...options })
           } catch (error) {
