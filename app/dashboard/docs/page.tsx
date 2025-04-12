@@ -42,8 +42,16 @@ export default function DocsPage() {
                 <h3 className="text-lg font-medium">Quick Start Guide</h3>
                 <ol className="list-decimal pl-5 space-y-2 text-foreground/70">
                   <li>
-                    <strong>Set up your exchange accounts</strong> - Create accounts on Blofin and/or Bitmart exchanges
-                    if you don't already have them.
+                    <strong>Set up your exchange accounts</strong> - Create accounts on Blofin and/or{" "}
+                    <a
+                      href="https://www.bitmart.com/invite/R4Jdty/en"
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="text-primary underline hover:text-primary/80"
+                    >
+                      Bitmart
+                    </a>{" "}
+                    exchanges if you don't already have them.
                   </li>
                   <li>
                     <strong>Generate API keys</strong> - In your exchange accounts, navigate to API Management and
