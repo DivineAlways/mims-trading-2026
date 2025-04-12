@@ -1,10 +1,13 @@
 "use server"
 
-import { getSupabaseClient } from "@/lib/supabase-singleton"
+import { createServerActionClient } from "@supabase/ssr"
+import { cookies } from "next/headers"
+import type { Database } from "@/lib/database.types" // Assuming you have this type definition
 
 export async function saveApiKeys(formData: FormData) {
+  const cookieStore = cookies()
+  const supabase = createServerActionClient<Database>({ cookies: () => cookieStore })
   try {
-    const supabase = getSupabaseClient()
 
     // Get the current user
     const {
@@ -92,8 +95,9 @@ export async function saveApiKeys(formData: FormData) {
 }
 
 export async function getApiKeys() {
+  const cookieStore = cookies()
+  const supabase = createServerActionClient<Database>({ cookies: () => cookieStore })
   try {
-    const supabase = getSupabaseClient()
 
     // Get the current user
     const {
