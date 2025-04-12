@@ -1,6 +1,6 @@
 "use server"
 
-import { createServerClient, type CookieOptions } from "@supabase/ssr" // Import CookieOptions
+import { createServerClient, type CookieOptions } from "@supabase/auth-helpers-nextjs" // Import CookieOptions
 import { cookies } from "next/headers"
 import type { Database } from "@/lib/database.types" // Assuming you have this type definition
 
