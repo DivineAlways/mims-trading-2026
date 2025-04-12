@@ -24,8 +24,6 @@ export async function saveApiKeys(formData: FormData) {
     }
   )
 
-  // Refresh session if needed
-  await supabase.auth.getSession()
   try {
 
     // Get the current user

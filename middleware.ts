@@ -1,4 +1,4 @@
-import { createMiddlewareClient, createServerClient } from "@supabase/ssr"
+import { createServerClient } from "@supabase/ssr"
 import { NextResponse } from "next/server"
 import type { NextRequest } from "next/server"
 import type { Database } from "@/lib/database.types" // Adjust path if your types are elsewhere
