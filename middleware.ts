@@ -4,11 +4,19 @@ import type { NextRequest } from "next/server"
 import type { Database } from "@/lib/database.types" // Adjust path if your types are elsewhere
 
 export async function middleware(request: NextRequest) {
+  // Create an initial response object
+  const response = NextResponse.next({
+    request: {
+      headers: request.headers,
+    },
+  });
+
   try {
     // This creates a Supabase client configured to use cookies
+    // Pass the pre-created response object
     const supabase = createMiddlewareClient<Database>({
       request,
-      response: NextResponse.next(), // Initialize response here
+      response,
     })
 
     // Refresh session if expired - required for Server Components
@@ -38,22 +46,13 @@ export async function middleware(request: NextRequest) {
     // return response;
 
     // For basic session refresh, just creating the client and calling getSession is enough.
-    // The cookie handling is managed by the library when using NextResponse.next().
-    const response = NextResponse.next({
-        request: {
-            headers: request.headers,
-        },
-    });
+    // The createMiddlewareClient modifies the response object directly (e.g., sets cookies)
+    // when getSession is called. We just need to return the modified response.
 
-    // Re-create client with the response object to ensure cookies are set correctly
-     const supabaseWithResponse = createMiddlewareClient<Database>({
-      request,
-      response,
-    })
+    // No need to create a second client here. The first one uses the response object.
+    // await supabase.auth.getSession(); // This call modifies the 'response' object passed earlier
 
-    await supabaseWithResponse.auth.getSession(); // Ensure session is handled
-
-    return response
+    return response // Return the potentially modified response
 
   } catch (e) {
     // If you are here, a server side error occurred.
